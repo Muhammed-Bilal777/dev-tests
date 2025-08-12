@@ -1,24 +1,24 @@
-name : cicd pipeline
+name: CICD Pipeline
 
-on :
+on:
   push:
-     branches: ['master']
+    branches: ['master']
 
-jobs : 
-   Build : 
-    runs-on : ubuntu-latest
-   steps : 
-      - name : checkout code
-        uses : actions/checkout@v4
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-      - name : setup nodejs
-        uses : actions/node-setup@v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version : 20
-      
-      - name : install dependencies
-        run : yarn
+          node-version: 20
 
-      - name : build code
-        run : yarn build
-        
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build code
+        run: yarn build
