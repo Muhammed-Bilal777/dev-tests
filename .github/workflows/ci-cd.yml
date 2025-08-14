@@ -34,3 +34,22 @@ jobs:
          run: yarn
        - name: run the tests
          run: yarn test
+    
+  Security : 
+    needs : [tests,build]
+    runs-on: ubuntu-latest
+    steps :
+     - name : checkout code
+       uses : actions/checkout@v4
+     - name: Build Docker Image
+       run: docker build -t my-app:latest .
+     - name: Run trivy security scan
+       uses : aquascurity/trivy-action@0.1.9
+       with: 
+         image-ref: my-app:latest
+         ignore-unfixed: true
+         severity: HIGH,CRITICAL
+         exit-code: '1'
+         format: table
+         output: trivy-image-report.txt
+
