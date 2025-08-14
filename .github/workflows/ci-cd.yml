@@ -25,31 +25,41 @@ jobs:
 
   tests:
     runs-on: ubuntu-latest
-    steps:
-       - name: checkout code
-         uses: actions/checkout@v4
-       - name: setup nodejs
-         uses: actions/setup-node@v4
-       - name: install dependencies
-         run: yarn
-       - name: run the tests
-         run: yarn test
-    
-  Security : 
-    needs : [tests,build]
-    runs-on: ubuntu-latest
-    steps :
-     - name : checkout code
-       uses : actions/checkout@v4
-     - name: Build Docker Image
-       run: docker build -t my-app:latest .
-     - name: Run trivy security scan
-       uses : aquascurity/trivy-action@0.1.9
-       with: 
-         image-ref: my-app:latest
-         ignore-unfixed: true
-         severity: HIGH,CRITICAL
-         exit-code: '1'
-         format: table
-         output: trivy-image-report.txt
 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run tests
+        run: yarn test
+
+  security:
+    needs: [tests, build]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Build Docker image
+      - name: Build Docker image
+        run: docker build -t myapp:latest .
+
+      # Run Trivy image scan
+      - name: Run Trivy image scan
+        uses: aquasecurity/trivy-action@0.1.9
+        with:
+          image-ref: myapp:latest
+          ignore-unfixed: true
+          severity: HIGH,CRITICAL
+          exit-code: '1'
+          format: table
+          output: trivy-image-report.txt
