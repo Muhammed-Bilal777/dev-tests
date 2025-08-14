@@ -62,4 +62,4 @@ jobs:
           severity: HIGH,CRITICAL
           exit-code: '0'
           format: table
-          output: trivy-image-report.txt
+          
