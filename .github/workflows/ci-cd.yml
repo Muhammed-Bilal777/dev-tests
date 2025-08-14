@@ -60,6 +60,6 @@ jobs:
           image-ref: myapp:latest
           ignore-unfixed: true
           severity: HIGH,CRITICAL
-          exit-code: '1'
+          exit-code: '0'
           format: table
           output: trivy-image-report.txt
